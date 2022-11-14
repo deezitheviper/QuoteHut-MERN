@@ -4,6 +4,8 @@ import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
+import authRouter from './routes/Auth.js'
+
 
 dotenv.config();
 
@@ -33,6 +35,21 @@ const connectDb = () => {
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });
+app.use('/api/auth', authRouter )
+app.use((err,req, res, next) => {
+    const errStatus = err.status || 500
+    const errMessage = err.message || 'Unable to proceed further'
+    return res.status(errStatus).json({
+        status:false,
+        message: errMessage,
+        error: errStatus,
+        stack: err.stack
+    })
+
+})
+
+
+
 
 app.listen(5000,() => {
     console.log('Server listening on port 5000');

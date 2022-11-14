@@ -1,6 +1,6 @@
 import User from '../models/authModel.js';
 import jwt from 'jsonwebtoken';
-
+import {createErr} from '../middlewares/error.js'
 
 export const authController = async (req, res, next) => {
     const {access_token} = req.body;
@@ -55,7 +55,7 @@ export const authController = async (req, res, next) => {
     }
 
     })}else{
-        next(CreateErr(400,"Google Login Error"));
+        next(createErr(400,"Google Login Error"));
     } 
 
 })

@@ -3,12 +3,17 @@ import mongoose from "mongoose";
 const {Schema} = mongoose;
 
 const userSchema = new Schema({
+    userId:{
+        type: String,
+        required: true,
+        unique: true
+    },
   email :{
     type: String,
     required: true,
     unique: true,
   },
-  username:{
+  name:{
     type: String,
     required: true,
     unique: true,
@@ -18,9 +23,11 @@ const userSchema = new Schema({
     required: true,
     default: "user",
   },
-  profileImage:{
+  picture:{
     type: String,
     required: true,
   },
   
 },{timestamp: true})
+
+export default mongoose.model('user',userSchema)
