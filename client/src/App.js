@@ -3,7 +3,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import Layout from "./components/Layout";
-import Login from "./components/Login";
+import Login from "./pages/Login";
 import Home from "./pages/Home.js";
 import QuoteDetail from "./pages/QuoteDetail";
 import Profile from "./pages/Profile";

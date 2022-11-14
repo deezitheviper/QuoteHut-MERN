@@ -1,13 +1,14 @@
 import User from '../models/authModel.js';
 import jwt from 'jsonwebtoken';
-import {createErr} from '../middlewares/error.js'
+import {createErr} from '../middlewares/error.js';
+import axios from 'axios';
 
 export const authController = async (req, res, next) => {
     const {access_token} = req.body;
-    const userInfo = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
+    await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
                 headers: { Authorization: `Bearer ${access_token}` },
-              }).then(res => {
-    const {name, picture, email_verified, sub} = res.data;
+              }).then(response => {
+    const {name, picture,email, email_verified, sub} = response.data;
     if(email_verified){
         User.findOne({email}).exec((err, user) => {
             if(user){
@@ -27,16 +28,14 @@ export const authController = async (req, res, next) => {
                 }
         })
     }else{
-        const user = new User({
+         user = new User({
             name,
             picture,
-            email_verified,
+            email,
             userId:sub
         })
          user.save((err, user) => {
-            if(err) { 
-                next(err)
-            }
+            if(user){ 
             const token = jwt.sign({id:user.userId,role:user.role}, process.env.SECRET_KEY,{
                 expiresIn: '2d'
             })
@@ -51,6 +50,8 @@ export const authController = async (req, res, next) => {
                     userId,
                 }
         })
+    }
+    next(err)
          })
     }
 
@@ -58,5 +59,5 @@ export const authController = async (req, res, next) => {
         next(createErr(400,"Google Login Error"));
     } 
 
-})
+}).catch(err => next(err))
 }
