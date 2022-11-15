@@ -6,6 +6,8 @@ import mongoose from 'mongoose';
 import morgan from 'morgan';
 import authRouter from './routes/Auth.js';
 import quoteRouter from './routes/Quote.js';
+import userRouter from './routes/User.js';
+
 
 dotenv.config();
 
@@ -36,7 +38,9 @@ app.get('/', (req, res) => {
     res.send('Hello World!');
 });
 app.use('/api/auth', authRouter )
+app.use('/api/user', userRouter )
 app.use('/api/quotes', quoteRouter)
+
 app.use((err,req, res, next) => {
     const errStatus = err.status || 500
     const errMessage = err.message || 'Unable to proceed further'

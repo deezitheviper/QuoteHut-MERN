@@ -9,6 +9,7 @@ export const authController = async (req, res, next) => {
                 headers: { Authorization: `Bearer ${access_token}` },
               }).then(response => {
     const {name, picture,email, email_verified, sub} = response.data;
+    const getUsername = (email) => email.split(/@(?=[^@]*$)/)[0];
     if(email_verified){
         User.findOne({email}).exec((err, user) => {
             if(user){
@@ -16,20 +17,22 @@ export const authController = async (req, res, next) => {
             const token = jwt.sign({id:user.userId,role:user.role}, process.env.SECRET_KEY,{
                 expiresIn: '2d'
             })
-            const {name,userId, email, picture} = user;
+            const {name,username, picture} = user;
             res.cookie("accesstoken", token, {
                 httpOnly: true,
             }).status(200).json({
                 user:{
                     name,
-                    email,
+                    username,
                     picture,
-                    userId,
+                    email,
+                    role
                 }
         })
     }else{
          user = new User({
             name,
+            username:getUsername(email),
             picture,
             email,
             userId:sub
@@ -39,15 +42,16 @@ export const authController = async (req, res, next) => {
             const token = jwt.sign({id:user.userId,role:user.role}, process.env.SECRET_KEY,{
                 expiresIn: '2d'
             })
-            const {name,userId, email, picture} = user;
+            const {name,username, email,role, picture} = user;
             res.cookie("accesstoken", token, {
                 httpOnly: true,
             }).status(200).json({
                 user:{
                     name,
                     email,
+                    username,
                     picture,
-                    userId,
+                    role
                 }
         })
     }
