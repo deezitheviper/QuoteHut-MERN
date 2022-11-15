@@ -1,10 +1,12 @@
 import React,{useEffect,useRef, useState} from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, redirect } from 'react-router-dom';
 import {CgMenuLeft} from 'react-icons/cg';
 import { Link } from 'react-router-dom';
 import logo from '../assets/img/apelogo.png';
 import {SlClose} from 'react-icons/sl';
 import {Sidebar} from './Index.js';
+import axios from '../utils/axios.js';
+
 
 
 const Layout = () => {
@@ -13,16 +15,20 @@ const Layout = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const userInfo = localStorage.getItem('user') !== undefined ? JSON.parse(localStorage.getItem('user')) : localStorage.clear();
      
-
+    const {username,email,picture,name } = userInfo
     useEffect(()=> {
-    
+        if(!userInfo?.userId) {
+            redirect('/Login')
+        }
+            setUser(userInfo);
+        
     },[])
     return (
   
            
         <div className='flex bg-gray-50 md:flex-row flex-col h-screen transaction-height duration-75 ease-out'>
             <div className='hidden md:flex h-screen flex-initial'>
-<Sidebar/>
+            <Sidebar user={user} closeNav={setToggleNav}/>
             </div>
 
             <div className='flex md:hidden flex-row'>
@@ -31,8 +37,8 @@ const Layout = () => {
                 <Link to="/">
                     <img src={logo} alt="logo" className='w-24'/>
                 </Link>
-                <Link to={`/profile/${user?.username}`}>
-                    <img src={user?.image} referrerPolicy="no-referrer" alt="" className='w-12 rounded-full'/>
+                <Link to={`/profile/${username}`}>
+                    <img src={picture} referrerPolicy="no-referrer" alt="" className='w-12 rounded-full'/>
                 </Link>
             </div> 
             {toggleNav && (

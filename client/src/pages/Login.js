@@ -17,12 +17,12 @@ const Login = () => {
             const userInfo = await axios.post('auth/login',{access_token}).then(res => res.data)
             .catch(err => console.log(err))
 
-            const {name, picture, userId, email, role} = userInfo.user;
+            const {name, picture,username, email, role} = userInfo.user;
             const doc = {
                 name,
                 picture,
                 email,
-                userId,
+              username,
                 role
             }
             localStorage.setItem('user', JSON.stringify(doc))

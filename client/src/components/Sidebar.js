@@ -44,7 +44,8 @@ const Sidebar = ({user, closeToggle}) => {
 
     return (
      
-        <div className='flex flex-col justify-between bg-white h-full  min-w-210 hide-scroll-bar'>
+        <div className='flex flex-col justify-between bg-white h-full overflow-y-auto  min-w-210 hide-scroll-bar'>
+       
             <div className='flex flex-col'>
              <div className='flex flex-col'>
                     <Link 
@@ -80,13 +81,15 @@ const Sidebar = ({user, closeToggle}) => {
             </div>
           
         </div>
+        
           {user && (
+         
             <Link
-            to={`/profile/${user.userName}`}
+            to={`/profile/${user.username}`}
             onClick={handleCloseSidebar}
             className="flex my-5 mb-3 gap-2 p-2 items-center  bg-white rounded-lg shadow-lg mx-3">
-                <img src={user.image} referrerpolicy="no-referrer" className="w-2 h-2 rounded-full" alt="" />
-            <p>{user.userName}</p>
+                <img src={user.picture} referrerpolicy="no-referrer" className="w-5 rounded-full" alt="" />
+            <p>{user.username}</p>
             </Link>
         )}
         </div>
