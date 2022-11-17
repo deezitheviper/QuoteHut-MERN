@@ -4,16 +4,17 @@ import {createErr} from '../middlewares/error.js';
 import axios from 'axios';
 
 export const authController = async (req, res, next) => {
-    const {access_token} = req.body;
+    const {access_token} = req.body; 
     await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
                 headers: { Authorization: `Bearer ${access_token}` },
               }).then(response => {
+                
     const {name, picture,email, email_verified, sub} = response.data;
     const getUsername = (email) => email.split(/@(?=[^@]*$)/)[0];
     if(email_verified){
         User.findOne({email}).exec((err, user) => {
             if(user){
-
+            
             const token = jwt.sign({id:user.userId,role:user.role}, process.env.SECRET_KEY,{
                 expiresIn: '2d'
             })
