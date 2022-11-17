@@ -19,6 +19,14 @@ const quoteSchema = new Schema({
         trim:true,
         defaults:'Others'
     },
+    image:{
+        type:String,
+        required:true,
+        trim:true,
+    },
+    cloudinary_id: {
+        type: String,
+      },
     about:{
         type:String,
         required:true,
