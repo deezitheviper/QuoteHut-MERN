@@ -37,6 +37,9 @@ const quoteSchema = new Schema({
     },
     comments:[{
         type: Schema.Types.ObjectId, ref: 'comment'
+    }],
+    savedBy:[{
+        type: Schema.Types.ObjectId, ref: 'user'
     }]
 })
 
