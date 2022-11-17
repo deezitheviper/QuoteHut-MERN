@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import bgimage from '../assets/img/share-bg.jpeg';
 import logo from '../assets/img/quotelogo.png';
 import { useGoogleLogin} from '@react-oauth/google';
-import axios from '../utils/axios';
+import instance from '../utils/axios';
 import {FcGoogle} from 'react-icons/fc';
 import { useNavigate } from 'react-router-dom';
 
@@ -14,8 +14,9 @@ const Login = () => {
         onSuccess: async tokenResponse => {
     
             const {access_token} = tokenResponse;
-            const userInfo = await axios.post('auth/login',{access_token}).then(res => res.data)
+            const userInfo = await instance.post('auth/login',{access_token}).then(res => res.data)
             .catch(err => console.log(err))
+            
 
             const {name, picture,username, email, role} = userInfo.user;
             const doc = {
