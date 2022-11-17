@@ -9,6 +9,7 @@ import quoteRouter from './routes/Quote.js';
 import userRouter from './routes/User.js';
 
 
+
 dotenv.config();
 
 const app = express();
@@ -25,6 +26,7 @@ if(process.env.NODE_ENV !== 'production'){
 
 app.use(cookieParser());
 
+
 //DB
 const connectDb = () => {
      mongoose.connect(process.env.MONGODBURL)
@@ -39,7 +41,7 @@ app.get('/', (req, res) => {
 });
 app.use('/api/auth', authRouter )
 app.use('/api/user', userRouter )
-app.use('/api/quotes', quoteRouter)
+app.use('/api/quote', quoteRouter)
 
 app.use((err,req, res, next) => {
     const errStatus = err.status || 500
