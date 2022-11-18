@@ -14,7 +14,6 @@ const Layout = () => {
     const [user, setUser] = useState();
     const [searchTerm, setSearchTerm] = useState('');
     const userInfo = localStorage.getItem('user') !== undefined ? JSON.parse(localStorage.getItem('user')) : localStorage.clear();
-     
     const {username,email,picture,name } = userInfo
     useEffect(()=> {
         if(!userInfo?.userId) {

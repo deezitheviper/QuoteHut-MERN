@@ -22,7 +22,7 @@ export const getQuote = async (req, res, next) => {
 }
 
 export const addQuote = async (req, res, next) => {
-    const {inputs} = req.body;
+   
     try {
       const newQuote = new quote(req.body)
       await newQuote.save() 
