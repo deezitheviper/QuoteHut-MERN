@@ -18,13 +18,14 @@ const Login = () => {
             .catch(err => console.log(err))
             
 
-            const {name, picture,username, email, role} = userInfo.user;
+            const {name, picture,username, email, role, id} = userInfo.user;
             const doc = {
                 name,
                 picture,
                 email,
               username,
-                role
+                role,
+                id
             }
             localStorage.setItem('user', JSON.stringify(doc))
             navigate('/',{replace:true})
