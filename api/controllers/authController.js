@@ -9,16 +9,16 @@ export const authController = async (req, res, next) => {
                 headers: { Authorization: `Bearer ${access_token}` },
               }).then(response => {
                 
-    const {name, picture,email, email_verified, sub} = response.data;
+    const {name, picture,email, email_verified} = response.data;
     const getUsername = (email) => email.split(/@(?=[^@]*$)/)[0];
     if(email_verified){
         User.findOne({email}).exec((err, user) => {
             if(user){
             
-            const token = jwt.sign({id:user.userId,role:user.role}, process.env.SECRET_KEY,{
+            const token = jwt.sign({id:user.id,role:user.role}, process.env.SECRET_KEY,{
                 expiresIn: '2d'
             })
-            const {name,username, picture} = user;
+            const {name,username,role,id, picture} = user;
             res.cookie("accesstoken", token, {
                 httpOnly: true,
             }).status(200).json({
@@ -27,7 +27,8 @@ export const authController = async (req, res, next) => {
                     username,
                     picture,
                     email,
-                    role
+                    role,
+                    id
                 }
         })
     }else{
@@ -35,15 +36,14 @@ export const authController = async (req, res, next) => {
             name,
             username:getUsername(email),
             picture,
-            email,
-            userId:sub
+            email
         })
          user.save((err, user) => {
             if(user){ 
-            const token = jwt.sign({id:user.userId,role:user.role}, process.env.SECRET_KEY,{
+            const token = jwt.sign({id:user.id,role:user.role}, process.env.SECRET_KEY,{
                 expiresIn: '2d'
             })
-            const {name,username, email,role, picture} = user;
+            const {name,username, email,role,id, picture} = user;
             res.cookie("accesstoken", token, {
                 httpOnly: true,
             }).status(200).json({
@@ -52,7 +52,8 @@ export const authController = async (req, res, next) => {
                     email,
                     username,
                     picture,
-                    role
+                    role,
+                    id
                 }
         })
     }
