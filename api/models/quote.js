@@ -41,7 +41,7 @@ const quoteSchema = new Schema({
     savedBy:[{
         type: Schema.Types.ObjectId, ref: 'user'
     }]
-})
+},{timestamps:true})
 
 
 export default mongoose.model('quote',quoteSchema)

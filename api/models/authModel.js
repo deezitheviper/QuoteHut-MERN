@@ -33,6 +33,6 @@ const userSchema = new Schema({
     required: true,
   },
   
-},{timestamp: true})
+},{timestamps: true})
 
 export default mongoose.model('user',userSchema)
