@@ -78,7 +78,8 @@ const CreateQuote = () => {
                 ...inputs,
                 postedBy:id
             }
-            const res =  await instance.post(`quote/create/${id}`,doc).then(res => res.data)
+             await instance.post(`quote/create/${id}`,doc).then(res => res.data)
+             navigate('/')
             setLoading(false)
             }catch(err)
             {   
