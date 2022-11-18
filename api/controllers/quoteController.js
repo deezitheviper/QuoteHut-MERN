@@ -28,9 +28,7 @@ export const addQuote = async (req, res, next) => {
       await newQuote.save() 
       res.status(200).json(newQuote)
     }catch(err){ 
-        //console.log(err)
         next(err) 
-        
     }  
 }
 
