@@ -15,6 +15,7 @@ const CreateQuote = () => {
         image: '',
 
     })
+
     const {title,quote,about,category,image} = inputs;
     const [err, setErr] = useState();
     const [preview, setPreview] = useState();
@@ -27,6 +28,9 @@ const CreateQuote = () => {
   
    
     const {user} = useOutletContext();
+
+    const {id} = user
+
     const categories = [
         { name:"Philosophy"},
         {name:'Life'},
@@ -67,22 +71,19 @@ const CreateQuote = () => {
     }
 
     const handlePublish = async (e) => {
-
-        if(title && image && quote && about && category){
+        if(id && title && image && quote && about && category){
             setLoading(true)
         try{
             const doc = {   
-                ...inputs
+                ...inputs,
+                postedBy:id
             }
-            const res =  await instance.post('quote/create',doc).then(res => res.data)
-            console.log(res)
+            const res =  await instance.post(`quote/create/${id}`,doc).then(res => res.data)
             setLoading(false)
             }catch(err)
             {   
-                console.log(err.response.data)
                 setLoading(false)
             }
-            
         }
     setLoading(false)
     }
