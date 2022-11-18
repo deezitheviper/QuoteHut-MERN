@@ -3,6 +3,7 @@ import { addQuote,deleteQuote,getQuote, getQuotes } from '../controllers/quoteCo
 import multer from 'multer';
 import cloudinary from 'cloudinary';
 import { CloudinaryStorage } from 'multer-storage-cloudinary';
+import { verifyUser } from '../middlewares/verify.js';
 
 cloudinary.config({
     cloud_name: process.env.CLOUD_NAME,
@@ -23,7 +24,7 @@ const upload = multer()
 const router = express.Router();
 
 router.get('/', getQuotes)
-router.post('/create', addQuote)
+router.post('/create/:id',verifyUser, addQuote)
 router.get('/:id', getQuote)
 router.delete('/:id', deleteQuote)
 
