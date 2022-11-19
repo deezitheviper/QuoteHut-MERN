@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import quote from "../models/quote.js";
 import cloudinary from "../utils/cloudinary.js";
-
+import Comment from "../models/comment.js";
 
 
 
@@ -21,7 +21,7 @@ export const getQuote = async (req, res, next) => {
         const {id} = req.params
         const quoteD = await quote.findById(id).populate({
             path:'postedBy',select:['username','picture','_id']
-        })
+        }).populate({path: 'comments',select:['_id','comment','postedBy']})
         .catch(err => next(err))
         res.status(200).json(quoteD)
 }
@@ -39,6 +39,22 @@ export const saveQuote = async (req, res, next) => {
     await quote.findByIdAndUpdate(id, Quote,{new:true})
     .catch(err => console.log(err))
     res.status(200).json("Quote Saved")
+}
+
+export const addComment = async (req, res, next) => {
+    const {id} = req.params
+    
+    if(!mongoose.Types.ObjectId.isValid(id))
+        return res.status(404).send("Quote not found")
+    try{ 
+    const Quote = await quote.findById(id)
+    const newcomment = new Comment(req.body)
+    Quote.comments.push(newcomment)
+    await quote.findByIdAndUpdate(id,Quote,{new:true})
+    await newcomment.save()
+    res.status(200).json("Comment Added")
+    }catch(err){ console.log(err)}
+    
 }
 
 
