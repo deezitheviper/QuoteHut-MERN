@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import Spinner from '../components/Spinner';
 import bg from '../assets/img/bg.jpg';
 import { googleLogout } from '@react-oauth/google';
 import {AiOutlineLogout} from 'react-icons/ai'
 import MasonryGrid  from '../components/Masonry';
 import moment from 'moment';
+import instance from '../utils/axios';
 
 const Profile = () => {
-    const [user, setUser] = useState();
+    const [userd, setUser] = useState();
     const [quotes, setQuotes] = useState();
     const [activeTab, setActiveTab] = useState('created');
+    const {user} = useOutletContext();
     const [text, setText] = useState();
     const navigate = useNavigate();
     const {id} = useParams();
@@ -23,21 +25,36 @@ const Profile = () => {
  
     const activeTabStyle = 'bg-darkOrange mr-4 text-white p-2 rounded-full w-20 outline-none';
     const nonActiveTabStyle = 'text-gray-600 mr-4 font-bold p-2 rounded-lg w-20 outline-none';
+    const fetchUser = async () => {
+        const res = await instance.get(`user/${id}`)
+        setUser(res.data)
+    }
+    const fetchSaveQ = async () => {
+        const res = await instance.get(`user/${id}/saved`)
+        setQuotes(res.data)
+    }
+    const fetchQ = async () => {
+        const res = await instance.get(`user/${id}/quotes`)
+        setQuotes(res.data)
+    }
     useEffect(()=> {
+        fetchUser()
     },[])
 
     useEffect(() => {
         if(activeTab  === 'created'){
-          
-        }else{
-         
+            fetchQ()
+        }
+        if(activeTab  === 'saved'){
+         fetchSaveQ()
         }
     },[activeTab,id])
 
-    if(!user) return <Spinner message="fetching profile..."/>
+    if(!userd) return <Spinner message="fetching profile..."/>
+
     return (
         <div className='relative pb-2 h-full lg:w-full justify-center items-center'>
-{console.log(user)}
+
             <div className='flex flex-col pb-5'>
                 <div className='relative flex flex-col mb-7'>
                 <div className='flex flex-col justify-center items-center'>
@@ -47,16 +64,17 @@ const Profile = () => {
                         </div>
                      
                         <img 
-                        src={user?.image}
+                        src={userd?.image}
                         alt=""
                         className='rounded-full h-20 w-20 z-10 -mt-10 shadow-xl object-contain'
                         />
                         <h1 className='font-bold text-2xl text-gray-700 text-center mt-3'> 
-                        {user.userName}
+                        {userd.username}
                         </h1>
-                            <p className='text-base text-gray-700'> <small>Joined : </small>{moment(user._createdAt).format("MMMM Do YYYY")}</p>
+                            <p className='text-base text-gray-700'> <small>Joined : </small>{moment(userd.createdAt).format("MMMM Do YYYY")}</p>
                         <div className='absolute top-0 z-1 right-0 p-2'>
-                            {user._id === id && (
+                           
+                            {userd._id === user.id && (
                                <div className='absolute top-0 z-1 right-0 p-2'>
                                 <button
                                     type='button'
@@ -78,6 +96,7 @@ const Profile = () => {
                                 }}
                                 className={`${activeTab === 'created' ? activeTabStyle : nonActiveTabStyle}`}
                                 >created</button>
+                                {userd._id === user.id && (
                                 <button 
                                 type="button"
                                 onClick={e => {
@@ -85,9 +104,10 @@ const Profile = () => {
                                
                                 }}
                                 className={`${activeTab === 'saved' ? activeTabStyle : nonActiveTabStyle}`}
-                                >saved</button>
+                                >saved</button>)}
                         </div>
                         </div>
+                       
 {quotes?.length? 
                         <div className='px-2'>
                             <MasonryGrid quotes={quotes} />
