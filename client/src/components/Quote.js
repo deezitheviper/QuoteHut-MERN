@@ -1,5 +1,5 @@
 import React,{useState,useCallback, useRef, useEffect} from 'react';
-import { Link, redirect, useOutletContext } from 'react-router-dom';
+import { Link, redirect, useNavigate, useOutletContext } from 'react-router-dom';
 import {FcDownload} from 'react-icons/fc';
 import {v4 as uuidv4} from 'uuid';
 import {AiFillDelete} from 'react-icons/ai';
@@ -11,7 +11,7 @@ import axios from '../utils/axios';
 
 
 
-const Quote = ({quote:{id, image,quote,postedBy,save}}) => {
+const Quote = ({quote:{_id, image,quote,postedBy,save}}) => {
     
     const [postHovered, setPostHovered] = useState(false);
     const {user} = useOutletContext();
@@ -20,7 +20,7 @@ const Quote = ({quote:{id, image,quote,postedBy,save}}) => {
     const ref = useRef();
     const imgElement = useRef();
     
- 
+    const navigate = useNavigate()
   
     const alreadySaved = !!(save?.filter(item => item.postedBy === user.id))?.length
 
@@ -39,22 +39,21 @@ const Quote = ({quote:{id, image,quote,postedBy,save}}) => {
 
   useEffect(() => {
     fetchProfile(postedBy)
-  }, [id])
+  }, [_id])
      
         return (
     
     <div className='mt-2 p-2'>
-       
         <div 
                 ref={ref}
                 onMouseEnter={() => setPostHovered(true)}
                 onMouseLeave={() => setPostHovered(false)}
-                onClick={() => redirect(`/quote/${id}`)}
+                onClick={() => navigate(`/Quote/${_id}`)}
                 className="relative cursor-zoom-in w-auto hover:shadow-lg rounded-lg overflow-hidden transition-all duration-500 ease-in-out" >
 
 <img src={image} className='rounded-lg w-full' alt="" ref={imgElement}
       onLoad={() => setImgH(imgElement.current.height)}/>
-<div className='flex flex-col justify-center absolute rounded-lg w-full gap-2 items-center top-0 left-0 bottom-0 right-0 bg-hQuotes'>
+<div className='flex flex-col justify-center px-3 absolute rounded-lg w-full gap-2 items-center top-0 left-0 bottom-0 right-0 bg-hQuotes'>
                      
                         <h1 className={` text-gray-100 uppercase text-base md:textlg mt-10 text-center text-bold z-20 `}>{quote}</h1>
                        <div className='flex   flex-col  justify-center items-center'>
