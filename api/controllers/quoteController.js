@@ -21,7 +21,7 @@ export const getQuote = async (req, res, next) => {
         const {id} = req.params
         const quoteD = await quote.findById(id).populate({
             path:'postedBy',select:['username','picture','_id']
-        }).populate({path: 'comments',select:['_id','comment','postedBy']})
+        }).populate({path: 'comments', populate:{'path': 'postedBy',model:'user'}})
         .catch(err => next(err))
         res.status(200).json(quoteD)
 }
