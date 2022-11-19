@@ -14,7 +14,7 @@ import {AiFillTags} from 'react-icons/ai';
 import {FcInfo} from 'react-icons/fc';
 import Modal from '../components/Modal';
 import instance from '../utils/axios';
-
+import moment from 'moment';
 
 
 const QuoteDetail = () => {
@@ -138,6 +138,7 @@ const QuoteDetail = () => {
     if(!details) return <Spinner message="fetching quote..."/>
     return (
         <>
+       
         {quotemodal && (
         <Modal showQuoteModal={showQuoteModal} Delete={deleteQuote} />
         )}
@@ -203,7 +204,7 @@ const QuoteDetail = () => {
                 <BsFillBookmarkPlusFill onClick={e => handleSave(e)}  className='cursor-pointer h-5 w-5 text-orange-500'/>
 }</div>
  }
-       
+       <p className='text-gray-600 text-base'> - {"   "}{moment(details?.createdAt).format('MMMM Do YYYY')}</p>
         </div>
         <div>
                     <h1 className='text-2xl font-bold break-words mt-3 capitalize'>
@@ -221,7 +222,7 @@ const QuoteDetail = () => {
   
                 
                 <Link 
-        to={`profile/${details.postedBy._id}`}
+        to={`/profile/${details.postedBy._id}`}
         className='flex gap-2 mt-4 items-center'
          >
             <img src={details.postedBy.picture} 
@@ -235,8 +236,10 @@ const QuoteDetail = () => {
             {details.comments?.map((comment, i) => (
                 <div className='flex justify-between'>
                 <div className='flex gap-2 mt-5  bg-white rounded-lg' key={i}>
+                <Link 
+        to={`/profile/${comment.postedBy._id}`}>
                     <img src={comment.postedBy.picture} alt="" className='h-7 w-7 rounded-full cursor-pointer'/>
-                    <div className='flex flex-col'>
+                    </Link><div className='flex flex-col'>
                         <p className='font-bold text-gray-600'>{comment.postedBy.userName}</p>
                         <p className='text-sm md:text-base text-gray-600'>{comment.comment}</p>
                         <hr class="my-3 w-full h-1 bg-gray-100 rounded border-0 dark:bg-gray-700" />
@@ -256,8 +259,9 @@ const QuoteDetail = () => {
             </div>
            
             <div className='flex flex-wrap mt-6 gap-3 '>
+                
             <Link 
-                to={`profile/${details.postedBy._id}`}
+                to={`/profile/${details.postedBy._id}`}
                 className='flex cursor-pointer items-center '
          >
             <img 
