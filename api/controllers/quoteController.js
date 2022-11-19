@@ -59,7 +59,7 @@ export const addComment = async (req, res, next) => {
 
 
 export const addQuote = async (req, res, next) => {
-   
+   const {id} = req.params;
     try {
       const newQuote = new quote(req.body)
       await newQuote.save() 
@@ -71,12 +71,7 @@ export const addQuote = async (req, res, next) => {
 
 export const deleteQuote = async (req, res, next) => {
     const {id} = req.params;
-    try {
-    const quote = await quote.findById(id)
-    await cloudinary.uploader.delete(quote.cloudinary_id);
-    await quote.remove()
-    res.status(200).json("Quote deleted")
-    }catch(err){
-        next(err)
-    }  
-}
+    await quote.findByIdAndDelete(id)
+    .catch(err => next(err));
+    res.status(200).json("Quote Deleted")
+} 

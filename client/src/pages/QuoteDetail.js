@@ -13,11 +13,13 @@ import {BsFillBookmarkDashFill} from 'react-icons/bs';
 import {AiFillTags} from 'react-icons/ai';
 import {FcInfo} from 'react-icons/fc';
 import Modal from '../components/Modal';
+import instance from '../utils/axios';
 
 
 
 const QuoteDetail = () => {
     const [details, setDetails] = useState();
+    const [saveLoading,setSaveLoading] = useState(false)
     const [similarquote, setSimilarQuote] = useState(null);
     const [comment, setComment] = useState('');
     const [loading, setLoading] = useState(false);
@@ -30,39 +32,59 @@ const QuoteDetail = () => {
     const [quotemodal, showQuoteModal] = useState(false);
     const [commentmodal, showCommentModal] = useState(false);
     const [cid, setCid] = useState('');
-    const alreadySaved = !!(details?.save?.filter(item => item.postedBy._id === user._id))?.length
+    const alreadySaved = !!(details?.savedBy?.filter(item => item === user._id))?.length
 
-
-      
-    var textstyle = ''
   
 
-    const fetchDetails = () => {
-  
-    
+    const fetchDetails = async () => {
+        const res = await instance.get(`quote/${id}`)
+        setDetails(res.data) 
     }
-    const addComment = () => {
+    const addComment = async () => {
         if(comment){
             setLoading(true)
+            try {
+                await instance.post(`quote/${id}/comment`,{
+                comment:comment,
+                postedBy:user.id
+        })
+        fetchDetails()
+        setLoading(false)
+        }  catch(err ){
+            console.log(err)
+            setLoading(false)
         }
+
     }
+}
 
    
 
-    const saveQuote = e => {
+    const handleSave = async e => {
         e.stopPropagation()
-        if(!alreadySaved){
-            
+        setSaveLoading(true)
+          try{
+           const res = await instance.post(`quote/save/${id}/${user.id}`)
+           fetchDetails();
+           setSaveLoading(false)
+          } catch(err){
+            console.log(err)
+            setSaveLoading(false)
+          }
+          
+        }
+
+  
+    const deleteQuote = async () => {
+  
+        try{
+            await instance.delete(`quote/${id}`)
+            navigate('/')
+          
+        }catch(err){
+            console.log(err)
         }
     }
-    const unsaveQuote = e => {
-        e.stopPropagation()
-        if(alreadySaved){
-        
-    }
-    }
-    const deleteQuote = () => {
-        }
 
     const deleteComment = () => {
        
@@ -72,11 +94,12 @@ const QuoteDetail = () => {
             if (ref.current === null) {
               return
             }
-        
+            const title = details?.title || 'saveas'
             toJpeg(ref.current, { quality: 1.0 })
             .then((dataUrl) => {
               const link = document.createElement('a')
-              link.download = `${details?.title}.jpeg`
+              
+              link.download = `${title}.jpeg`
               link.href = dataUrl
               link.click()
             })
@@ -116,14 +139,14 @@ const QuoteDetail = () => {
         <Modal showQuoteModal={showCommentModal} Delete={deleteComment} cid={cid} />
         )}
         <div className='flex-1 px-2 md:px-5'>
-            {/*console.log(details.quote.length, textstyle, imgH)*/}
+            
         <div className='bg-gray-50'>
             <Header/>
         </div>
         <div className='flex xl:flex-row flex-col m-auto bg-white' style={{maxWidth: '1500px', borderRadius: '32px'}}>
             <div ref={ref} className='relative flex justify-center items-center  w-full h-full  md:flex-start flex-initial'>
                 <img 
-                src={details.image && ''} 
+                src={details.image} 
                 alt=''
                 className='rounded-lg w-full'
                 ref={imgElement}
@@ -131,7 +154,7 @@ const QuoteDetail = () => {
                />
                  <div className='flex flex-col absolute rounded-lg w-full gap-5  justify-center items-center top-0 left-0 bottom-0 right-0 bg-quotes'>
                       
-                        <h1 className={`text-gray-100 uppercase mt-20  text-center text-bold items-center z-10`}>{details.quote}</h1>
+                        <h1 className={`text-gray-100 uppercase mt-20 px-5 text-center text-bold items-center z-10`}>{details?.quote}</h1>
                         <div className='opacity-70 bottom-0 flex flex-col justify-center items-center'>
                         <img src={logo} alt="" width='60px' />
                         <small className='text-white text-xs  pb-3 '>QuoteHut</small>
@@ -150,23 +173,29 @@ const QuoteDetail = () => {
              <HiDocumentDownload className='h-6 w-6' color='teal' />
            </div>
          
-    {details?.postedBy?._id === user._id &&
+    {details?.postedBy._id === user.id && (
  <button onClick={e => { e.stopPropagation()
   showQuoteModal(true)}} className='flex items-center justify-center bg-white opacity-70 hover:opacity-100 text-red-600 font-bold rounded-full w-9 h-9  text-base hover:shadow-md outlined-none'>
+
 <AiFillDelete className='h-6 w-6' />
     </button>
- 
+    )
  } 
         {alreadySaved? 
                          <div className='flex  justify-center gap-1 items-center'>
-                         <div className='text-gray-700 text-sm'>{details?.save?.length}</div>
-                          <BsFillBookmarkDashFill onClick={e => unsaveQuote(e)}  className='cursor-pointer h-5 w-5 text-red-500'/>
+                         <div className='text-gray-700 text-sm'>{details?.savedBy?.length}</div>
+                      {saveLoading?
+                     <p>...</p>:
+                      <BsFillBookmarkDashFill onClick={e => handleSave(e)}  className='cursor-pointer h-5 w-5 text-red-500'/>
+                       }
           </div>
           :
                 <div className='flex  justify-center gap-1 items-center'>
-                <div className='text-gray-700 text-sm'>{details?.save?.length}</div>
-                 <BsFillBookmarkPlusFill onClick={e => saveQuote(e)}  className='cursor-pointer h-5 w-5 text-orange-500'/>
- </div>
+                <div className='text-gray-700 text-sm'>{details?.savedBy?.length}</div>
+                {saveLoading? 
+                <p>...</p>: 
+                <BsFillBookmarkPlusFill onClick={e => handleSave(e)}  className='cursor-pointer h-5 w-5 text-orange-500'/>
+}</div>
  }
        
         </div>
@@ -189,9 +218,9 @@ const QuoteDetail = () => {
         to={`profile/${details.postedBy._id}`}
         className='flex gap-2 mt-4 items-center'
          >
-            <img src={details.postedBy.image} 
+            <img src={details.postedBy.picture} 
             className='w-6 h-6 rounded-full object-contain' alt=""/>
-            <p className='font semibold capitalize text-sm'>{details.postedBy?.userName}</p>
+            <p className='font semibold capitalize text-sm'>{details.postedBy?.username}</p>
          </Link>
 
          <hr class="my-3 w-full h-1 bg-gray-100 rounded border-0 dark:bg-gray-700" />
@@ -200,7 +229,7 @@ const QuoteDetail = () => {
             {details.comments?.map((comment, i) => (
                 <div className='flex justify-between'>
                 <div className='flex gap-2 mt-5  bg-white rounded-lg' key={i}>
-                    <img src={comment.postedBy.image} alt="" className='h-7 w-7 rounded-full cursor-pointer'/>
+                    <img src={comment.postedBy.picture} alt="" className='h-7 w-7 rounded-full cursor-pointer'/>
                     <div className='flex flex-col'>
                         <p className='font-bold text-gray-600'>{comment.postedBy.userName}</p>
                         <p className='text-sm md:text-base text-gray-600'>{comment.comment}</p>
