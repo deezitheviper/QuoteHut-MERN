@@ -8,7 +8,7 @@ export const authController = async (req, res, next) => {
     await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
                 headers: { Authorization: `Bearer ${access_token}` },
               }).then(response => {
-                
+              
     const {name, picture,email, email_verified} = response.data;
     const getUsername = (email) => email.split(/@(?=[^@]*$)/)[0];
     if(email_verified){
@@ -38,7 +38,10 @@ export const authController = async (req, res, next) => {
             picture,
             email
         })
+
+       
          user.save((err, user) => {
+            console.log(err);
             if(user){ 
             const token = jwt.sign({id:user.id,role:user.role}, process.env.SECRET_KEY,{
                 expiresIn: '2d'
