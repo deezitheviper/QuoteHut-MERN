@@ -37,7 +37,7 @@ const Feed = () => {
 
     return (
         <div className='flex-1 px-2 md:px-5'>
-          
+         
             <div className='bg-gray-50'>
                 <Header />
             </div>
