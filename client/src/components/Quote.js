@@ -15,14 +15,14 @@ const Quote = ({quote:{_id, image,quote,postedBy,save}}) => {
     
     const [postHovered, setPostHovered] = useState(false);
     const {user} = useOutletContext();
-    const [postBy, setPostBy] = useState(false);
+
     const [imgH, setImgH] = useState('');
     const ref = useRef();
     const imgElement = useRef();
     
     const navigate = useNavigate()
   
-    const alreadySaved = !!(save?.filter(item => item.postedBy === user.id))?.length
+    const alreadySaved = !!(save?.filter(item => item.postedBy._id === user.id))?.length
 
     const saveQuote = e => {
         e.stopPropagation()
@@ -32,14 +32,9 @@ const Quote = ({quote:{_id, image,quote,postedBy,save}}) => {
 
     }
   
-    const fetchProfile = async (id) => {
-        const res = await axios.get(`user/${id}`);
-        setPostBy(res.data)
-    }
 
-  useEffect(() => {
-    fetchProfile(postedBy)
-  }, [_id])
+
+
      
         return (
     
@@ -88,12 +83,12 @@ const Quote = ({quote:{_id, image,quote,postedBy,save}}) => {
         </div>
 
         <Link 
-        to={`profile/${postBy?._id}`}
+        to={`profile/${postedBy?._id}`}
         className='flex gap-2 mt-4 items-center '
          >
-            <img src={postBy?.picture} 
+            <img src={postedBy?.picture} 
             className='w-6 rounded-full object-contain' alt=""/>
-            <p className='font semibold capitalize text-sm'>{postBy?.username}</p>
+            <p className='font semibold capitalize text-sm'>{postedBy?.username}</p>
          </Link>
      </div>  
 
