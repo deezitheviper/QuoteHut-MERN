@@ -75,3 +75,10 @@ export const deleteQuote = async (req, res, next) => {
     .catch(err => next(err));
     res.status(200).json("Quote Deleted")
 } 
+
+export const deleteComment = async (req, res, next) => {
+    const {id} = req.params;
+    await Comment.findByIdAndDelete(id)
+    .catch(err => next(err));
+    res.status(200).json("Comment Deleted")
+}

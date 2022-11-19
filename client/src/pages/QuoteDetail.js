@@ -86,9 +86,15 @@ const QuoteDetail = () => {
         }
     }
 
-    const deleteComment = () => {
-       
+    const deleteComment = async () => {
+        try{
+       await instance.delete(`quote/${cid}/comment`)
+       fetchDetails()
+       showCommentModal(false)
+        }catch(err){
+            console.log(err)
         }
+    }
 
         const onButtonClick = useCallback(() => {
             if (ref.current === null) {
@@ -237,9 +243,9 @@ const QuoteDetail = () => {
                 </div>       
                 </div>
                 
-                             {comment?.postedBy?._id === user._id &&
+                             {comment?.postedBy?._id === user.id &&
                                 <div onClick={e => {
-                                    setCid(comment._key)
+                                    setCid(comment._id)
                                     showCommentModal(true)
                                     }} className='flex flex-shrink-0 items-center justify-center bg-white opacity-70 hover:opacity-100 text-red-600 font-bold rounded-full w-9 h-9  text-base hover:shadow-md outlined-none'>
                                <AiFillDelete />
