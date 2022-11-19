@@ -9,6 +9,9 @@ import cloudinary from "../utils/cloudinary.js";
 
 export const getQuotes = async (req, res, next) => {
     const quotes =  await quote.find().sort({createdAt: 'desc'})
+    .populate({
+        path:'postedBy',select:['username','picture','_id']
+    })
     .catch( err => next(err))
     res.status(200).json(quotes)   
 }
@@ -16,7 +19,9 @@ export const getQuotes = async (req, res, next) => {
 export const getQuote = async (req, res, next) => {
     
         const {id} = req.params
-        const quoteD = await quote.findById(id)
+        const quoteD = await quote.findById(id).populate({
+            path:'postedBy',select:['username','picture','_id']
+        })
         .catch(err => next(err))
         res.status(200).json(quoteD)
 }
