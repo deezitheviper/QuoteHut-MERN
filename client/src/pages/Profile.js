@@ -11,9 +11,9 @@ import instance from '../utils/axios';
 const Profile = () => {
     const [userd, setUser] = useState();
     const [quotes, setQuotes] = useState();
+    const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState('created');
     const {user} = useOutletContext();
-    const [text, setText] = useState();
     const navigate = useNavigate();
     const {id} = useParams();
 
@@ -25,19 +25,28 @@ const Profile = () => {
  
     const activeTabStyle = 'bg-darkOrange mr-4 text-white p-2 rounded-full w-20 outline-none';
     const nonActiveTabStyle = 'text-gray-600 mr-4 font-bold p-2 rounded-lg w-20 outline-none';
+ 
     const fetchUser = async () => {
+        setLoading(true)
         const res = await instance.get(`user/${id}`)
         setUser(res.data)
+        setLoading(false)
     }
+
     const fetchSaveQ = async () => {
+        setLoading(true)
         const res = await instance.get(`user/${id}/saved`)
         setQuotes(res.data)
+        setLoading(false)
     }
     const fetchQ = async () => {
+        setLoading(true)
         const res = await instance.get(`user/${id}/quotes`)
         setQuotes(res.data)
+        setLoading(false)
     }
     useEffect(()=> {
+   
         fetchUser()
     },[])
 
@@ -45,13 +54,13 @@ const Profile = () => {
         if(activeTab  === 'created'){
             fetchQ()
         }
-        if(activeTab  === 'saved'){
+        else{
          fetchSaveQ()
         }
     },[activeTab,id])
 
     if(!userd) return <Spinner message="fetching profile..."/>
-
+   
     return (
         <div className='relative pb-2 h-full lg:w-full justify-center items-center'>
 
@@ -108,14 +117,20 @@ const Profile = () => {
                         </div>
                         </div>
                        
-{quotes?.length? 
+{quotes?.length > 0? 
                         <div className='px-2'>
                             <MasonryGrid quotes={quotes} />
                         </div>
                         : 
+                        <>
+                        {loading?
+                          <Spinner message="Fetching quotes..." />
+                          :
                         <div className='flex font-bold text-gray-700 tex-2xl justify-center items-center'>
                             No Quotes
-                            </div>
+                            </div>  
+                        }
+                        </>
 }
                
                 </div>

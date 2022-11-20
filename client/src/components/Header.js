@@ -28,7 +28,7 @@ const Header = () => {
                 />
             </div>
         <div className='flex gap-3'>
-            <Link to={`/profile/${user?.username}`} className="hidden md:block" >
+            <Link to={`/profile/${user?.id}`} className="hidden md:block" >
                 <img src={user?.picture} referrerPolicy="no-referrer" alt="" className='w-10 rounded-full' />
     
             </Link> 

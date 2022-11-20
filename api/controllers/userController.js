@@ -27,7 +27,6 @@ export const getSaveQ = async (req,res,next) => {
        const {userId} = req.params
        try {
               const quotes = await quote.find({savedBy:userId})
-              quotes.save()
               res.status(200).json(quotes)
        }catch(err) {
               console.log(err)
