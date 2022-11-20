@@ -73,7 +73,7 @@ const Profile = () => {
                         </div>
                      
                         <img 
-                        src={userd?.image}
+                        src={userd?.picture}
                         alt=""
                         className='rounded-full h-20 w-20 z-10 -mt-10 shadow-xl object-contain'
                         />
