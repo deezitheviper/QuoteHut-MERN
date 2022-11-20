@@ -21,7 +21,13 @@ const Feed = () => {
     useEffect(()=> {
         setLoading(true)
         if(id){
-             
+            instance.get(`quote/category?cat=${id}`)
+            .then(res => {
+                setQuotes(res.data)
+                setLoading(false)
+            })
+             .catch(err => console.log(err))
+
         }else{
            instance.get('quote/').then(res =>{
 
@@ -37,7 +43,7 @@ const Feed = () => {
 
     return (
         <div className='flex-1 px-2 md:px-5'>
-         
+        
             <div className='bg-gray-50'>
                 <Header />
             </div>

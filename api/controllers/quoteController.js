@@ -16,6 +16,17 @@ export const getQuotes = async (req, res, next) => {
     res.status(200).json(quotes)   
 }
 
+
+export const getCatQuotes = async (req, res, next) => {
+    const {cat} = req.query;
+    const quotes =  await quote.find({category:cat}).sort({createdAt: 'desc'})
+    .populate({
+        path:'postedBy',select:['username','picture','_id']
+    })
+    .catch( err => next(err))
+    res.status(200).json(quotes)   
+}
+
 export const searchQ = async (req, res, next) => {
     const {q} = req.query
     const quotes = await quote.find({
@@ -41,6 +52,7 @@ export const getQuote = async (req, res, next) => {
         .catch(err => next(err))
         res.status(200).json(quoteD)
 }
+
 
 
 
