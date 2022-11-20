@@ -1,5 +1,5 @@
 import express from 'express';
-import { addComment, addQuote,deleteComment,deleteQuote,getQuote, getQuotes, saveQuote } from '../controllers/quoteController.js';
+import { addComment, addQuote,deleteComment,deleteQuote,getQuote, getQuotes, saveQuote, searchQ } from '../controllers/quoteController.js';
 import multer from 'multer';
 import cloudinary from 'cloudinary';
 import { CloudinaryStorage } from 'multer-storage-cloudinary';
@@ -24,6 +24,7 @@ const upload = multer()
 const router = express.Router();
 
 router.get('/', getQuotes)
+router.get('/search', searchQ)
 router.post('/create/:id',verifyUser, addQuote)
 router.post('/:id/comment',verifyUser, addComment)
 router.get('/:id', getQuote)

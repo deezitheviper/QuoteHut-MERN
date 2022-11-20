@@ -16,6 +16,22 @@ export const getQuotes = async (req, res, next) => {
     res.status(200).json(quotes)   
 }
 
+export const searchQ = async (req, res, next) => {
+    const {q} = req.query
+    const quotes = await quote.find({
+        $or: [
+            {title: {$regex: q, $options: 'i'}},
+            {about: {$regex: q, $options: 'i'}},]
+}).sort({createdAt: 'desc'})
+.populate({
+    path:'postedBy',select:['username','picture','_id']
+})
+.catch(err => console.log(err))
+res.status(200).json(quotes)   
+
+}
+
+
 export const getQuote = async (req, res, next) => {
     
         const {id} = req.params
@@ -25,6 +41,8 @@ export const getQuote = async (req, res, next) => {
         .catch(err => next(err))
         res.status(200).json(quoteD)
 }
+
+
 
 export const saveQuote = async (req, res, next) => {
     const {id, userId} = req.params
