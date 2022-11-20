@@ -13,8 +13,9 @@ const Layout = () => {
     const [toggleNav, setToggleNav] = useState(false);
     const [user, setUser] = useState();
     const [searchTerm, setSearchTerm] = useState('');
+ 
     const userInfo = localStorage.getItem('user') !== undefined ? JSON.parse(localStorage.getItem('user')) : localStorage.clear();
-    const {username,email,picture,name } = userInfo
+    const {username,picture} = userInfo
     useEffect(()=> {
         if(!userInfo?.userId) {
             redirect('/Login')

@@ -8,6 +8,7 @@ import Search from '../pages/Search';
 const Header = () => {
     const naviagte = useNavigate(); 
     const {user} = useOutletContext();
+   
     const {searchTerm, setSearchTerm} = useOutletContext();
     //if(!user) return null;
   
@@ -17,7 +18,9 @@ const Header = () => {
                 <AiOutlineSearch fontSize={21} className="ml-1" />
                 <input 
                 type="text"
-                onChange={e => setSearchTerm(e.target.value)}
+                onInput={e =>{
+                    setSearchTerm(e.target.value)
+                }}
                 placeholder="Search"
                 value={searchTerm}
                 onFocus={() => naviagte('/search')}
