@@ -18,6 +18,15 @@ Share with other user
 Save Quote
 Download Quote
 
-## Deducted Functionalities (Not made public)
+#Home Page
+![Screengrab](/home.png)
 
-Text size reponsiveness and adjustment with respect to image Height.
+#Detail Page
+![Screengrab](/detail.png)
+
+#Profile Page
+![Screengrab](/profile.png)
+
+## Deducted Functionalities (private repo) 
+
+Text size reponsiveness and adjustment with respect to image Height.( i would like to see different solutions for this), so you can pull request.
