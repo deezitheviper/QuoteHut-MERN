@@ -35,6 +35,13 @@ const QuoteDetail = () => {
     const alreadySaved = !!(details?.savedBy?.filter(item => item === user._id))?.length
 
   
+    let styles = "";
+
+    if(imgH >= 450){
+        styles = 'text-2xl ';
+    }else{
+        styles = 'text-md ';
+    }
 
     const fetchDetails = async () => {
         const res = await instance.get(`quote/${id}`)
@@ -138,7 +145,7 @@ const QuoteDetail = () => {
     if(!details) return <Spinner message="fetching quote..."/>
     return (
         <>
-       
+      
         {quotemodal && (
         <Modal showQuoteModal={showQuoteModal} Delete={deleteQuote} />
         )}
@@ -161,7 +168,7 @@ const QuoteDetail = () => {
                />
                  <div className='flex flex-col absolute rounded-lg w-full gap-5  justify-center items-center top-0 left-0 bottom-0 right-0 bg-quotes'>
                       
-                        <h1 className={`text-gray-100 uppercase mt-20 px-5 text-center text-bold items-center z-10`}>{details?.quote}</h1>
+                        <h1 className={`text-gray-100 uppercase mt-20 px-5 text-center ${styles} items-center z-10`}>{details?.quote}</h1>
                         <div className='opacity-70 bottom-0 flex flex-col justify-center items-center'>
                         <img src={logo} alt="" width='60px' />
                         <small className='text-white text-xs  pb-3 '>QuoteHut</small>
