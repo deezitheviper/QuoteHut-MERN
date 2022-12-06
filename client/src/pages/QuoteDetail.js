@@ -5,7 +5,7 @@ import Spinner from '../components/Spinner';
 import { Link, useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import { HiDocumentDownload } from 'react-icons/hi';
 import MasonryGrid  from '../components/Masonry';
-import logo from '../assets/img/quotelogo.png'
+import logo from '../assets/img/viperHut.png'
 import {AiFillDelete} from 'react-icons/ai';
 import { toJpeg } from 'html-to-image';
 import {BsFillBookmarkPlusFill} from 'react-icons/bs';

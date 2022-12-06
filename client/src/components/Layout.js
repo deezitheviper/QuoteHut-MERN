@@ -1,5 +1,5 @@
 import React,{useEffect,useRef, useState} from 'react';
-import { Outlet, redirect } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import {CgMenuLeft} from 'react-icons/cg';
 import { Link } from 'react-router-dom';
 import logo from '../assets/img/apelogo.png';
@@ -11,14 +11,15 @@ import axios from '../utils/axios.js';
 
 const Layout = () => {
     const [toggleNav, setToggleNav] = useState(false);
-    const [user, setUser] = useState();
+    const [user, setUser] = useState({});
     const [searchTerm, setSearchTerm] = useState('');
- 
+    const navigate = useNavigate();
     const userInfo = localStorage.getItem('user') !== undefined ? JSON.parse(localStorage.getItem('user')) : localStorage.clear();
-    const {username,picture} = userInfo
+   
     useEffect(()=> {
-        if(!userInfo?.userId) {
-            redirect('/Login')
+       
+        if(!userInfo ) {
+            navigate('/Login')
         }
             setUser(userInfo);
         
@@ -37,8 +38,8 @@ const Layout = () => {
                 <Link to="/">
                     <img src={logo} alt="logo" className='w-24'/>
                 </Link>
-                <Link to={`/profile/${username}`}>
-                    <img src={picture} referrerPolicy="no-referrer" alt="" className='w-12 rounded-full'/>
+                <Link to={`/profile/${user?.username}`}>
+                    <img src={user?.picture} referrerPolicy="no-referrer" alt="" className='w-12 rounded-full'/>
                 </Link>
             </div> 
             {toggleNav && (

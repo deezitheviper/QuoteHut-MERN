@@ -3,7 +3,7 @@ import { Link, redirect, useNavigate, useOutletContext } from 'react-router-dom'
 import {FcDownload} from 'react-icons/fc';
 import {v4 as uuidv4} from 'uuid';
 import {AiFillDelete} from 'react-icons/ai';
-import logo from '../assets/img/quotelogo.png';
+import logo from '../assets/img/viperHut.png';
 import {BsFillBookmarkPlusFill} from 'react-icons/bs';
 import {BsFillBookmarkDashFill} from 'react-icons/bs';
 import { toJpeg } from 'html-to-image';
