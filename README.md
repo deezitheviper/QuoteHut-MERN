@@ -19,7 +19,7 @@ Save Quote
 Download Quote
 
 #Home Page
-![Screengrab](/home.png)
+![Screengrab](/homep.png)
 
 #Detail Page
 ![Screengrab](/detail.png)
