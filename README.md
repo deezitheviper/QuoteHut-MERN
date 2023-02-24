@@ -27,6 +27,3 @@ Download Quote
 #Profile Page
 ![Screengrab](/profile.png)
 
-## Deducted Functionalities (private repo) 
-
-Text size reponsiveness and adjustment with respect to image Height.( i would like to see different solutions for this), so you can pull request.
