@@ -4,26 +4,34 @@ The MERN stack version of my original build with React and Sanity [QuoteSutra](h
 
 
 ## Technologies
-Tailwindcss
-React
-Express
-Nodejs
-Mongodb
+  ```
+    - Tailwindcss
+    - React
+    - Express
+    - Nodejs
+    - Mongodb
 
+  ```
 
 ## Functionalities 
-Google Login 
-Create a photo quote
-Share with other user
-Save Quote
-Download Quote
+  ```
+  - Google Login 
+  - Create a photo quote
+  - Share with other user
+  - Save Quote
+  - Download Quote
 
-#Home Page
+  ```
+
+# Home Page
 ![Screengrab](/home.png)
 
-#Detail Page
+# Login Page
+![Screengrab](/login.png)
+
+# Detail Page
 ![Screengrab](/detail.png)
 
-#Profile Page
+# Profile Page
 ![Screengrab](/profile.png)
 
