@@ -17,6 +17,7 @@ const Login = () => {
             const userInfo = await instance.post('auth/login',{access_token}).then(res => res.data)
             .catch(err => console.log(err))
             
+            console.log(userInfo)
 
             const {name, picture,username, email, role, id} = userInfo.user;
             const doc = {
@@ -41,7 +42,7 @@ const Login = () => {
                 <div className='absolute flex flex-col justify-center items-center top-0 left-0 bottom-0 right-0 bg-blackOverlay'>
                     <div className='flex flex-col justify-center items-center p-5'>
                         <img src={logo} alt="sharehut" width='130px' />
-                        <p className='text-white' >QuoteHut</p>
+                        <p className='text-white' >Quote Sutra</p>
                     </div>
 
                     <div className='shadow-2xl'>
