@@ -1,4 +1,4 @@
-# QuoteHut - a full stack social platform where users can make and share picture qoutes 
+# QuoteSutra - a full stack social platform where users can make and share picture qoutes 
 
 The MERN stack version of my original build with React and Sanity [QuoteSutra](https://github.com/deezitheviper/QuoteSutra--Sanity-Backend)
 
