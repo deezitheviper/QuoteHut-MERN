@@ -26,12 +26,5 @@ The MERN stack version of my original build with React and Sanity [QuoteSutra](h
 # Home Page
 ![Screengrab](/home.png)
 
-# Login Page
-![Screengrab](/login.png)
 
-# Detail Page
-![Screengrab](/detail.png)
-
-# Profile Page
-![Screengrab](/profile.png)
 
